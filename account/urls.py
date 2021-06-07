@@ -11,3 +11,4 @@ urlpatterns = [
     path('change_password/', views.ChangePasswordView.as_view(), name='change-password'),
     path('forgot_password/', views.ForgotPasswordView.as_view(), name='forgot-password'),
 ]
+# d,pd
