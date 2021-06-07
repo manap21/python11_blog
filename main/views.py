@@ -31,9 +31,9 @@ class PostDetailsView(DetailView):
     template_name = 'main/post_details.html'
 
 
-# TODO: Список постов по категориям
-# TODO: Переходы по страницам
+
 # TODO: Регистрация, активация, логин, логаут
+# TODO: HTML -  письмо
 # TODO: Фильтрация, поиск, сортировка
 # TODO: Пагинация
 # TODO: Переиспользование шаблонов
