@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, TemplateView
 
-from account.forms import RegistrationForm
+from account.forms import RegistrationForm, ChangePasswordForm, ForgotPasswordForm
 
 User = get_user_model()
 
@@ -28,11 +29,30 @@ class ActivationView(View):
         user.save()
         return render(request, 'account/activation.html', {})
 
-class LoginView():
-    pass
+class SignView(LoginView):
+    template_name = 'account/login.html'
+    success_url = reverse_lazy('index-page')
 
-class ChangePasswordView():
-    pass
+class ChangePasswordView(View):
+    def post(self, request):
+        form = ChangePasswordForm(request.POST, request=request)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('index-page'))
 
-class ForgotPasswordView():
-    pass
+    def get(self, request):
+        form = ChangePasswordForm(request=request)
+        return render(request, 'account/change_password.html', {'form': form})
+
+
+class ForgotPasswordView(View):
+    def post(self, request):
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            form.send_new_password()
+            return redirect(reverse_lazy('forgot-pass-complete'))
+        return render(request, 'account/forgot_password.html', {'form': form})
+
+    def get(self, request):
+        form = ForgotPasswordForm()
+        return render(request, 'account/forgot_password.html', {'form': form})

@@ -43,6 +43,7 @@ class User(AbstractBaseUser):
     def create_activation_code(self):
         from django.utils.crypto import get_random_string
         code = get_random_string(8, '0123456789')
+        self.activation_code = code
         self.save()
 
     def has_module_perms(self, app_label):
